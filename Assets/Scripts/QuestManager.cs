@@ -33,6 +33,7 @@ public class QuestManager : MonoBehaviour {
 		//If only one quest in scene, make it active	
 		if (quests.Count == 1) {
 			currentQuest = quests[0];
+			currentQuest.changeState(Quest.QuestState.Prologue);
 			currentObjective = currentQuest.getObjective ();
 		} 
 
@@ -64,7 +65,7 @@ public class QuestManager : MonoBehaviour {
 	/// Finishes the quest.
 	/// </summary>
 	private void finishQuest() {
-		currentQuest.changeState(Quest.QuestState.Complete);
+		currentQuest.changeState(Quest.QuestState.Finished);
 	}
 
 	/// <summary>

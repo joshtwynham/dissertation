@@ -6,7 +6,7 @@
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
 	<RootNamespace></RootNamespace>
-	<ProjectGuid>{B464E99C-0AB8-A65C-312C-D2ACD07B08AD}</ProjectGuid>
+	<ProjectGuid>{551BD817-C1BC-14A6-7FBB-BB37189F8AE3}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<AssemblyName>Assembly-CSharp</AssemblyName>
@@ -53,9 +53,8 @@
      <Compile Include="Assets\Scripts\Quest.cs" />
      <Compile Include="Assets\Scripts\QuestManager.cs" />
      <Compile Include="Assets\Scripts\TutorialQuest.cs" />
-     <None Include="Assets\Resources\archMageDialogue.txt" />
-     <None Include="Assets\Resources\archMage.txt" />
-     <None Include="Assets\Resources\tutorial.txt" />
+     <None Include="Assets\Resources\Dialogue\archMageTutorial.txt" />
+     <None Include="Assets\Resources\Objectives\tutorial.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

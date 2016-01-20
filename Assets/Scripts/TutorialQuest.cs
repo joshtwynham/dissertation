@@ -9,7 +9,7 @@ public class TutorialQuest : Quest {
 		this.questTitle = "Tutorial";
 
 		//Reads tutorial objectives from file and stores in an array
-		TextAsset text = Resources.Load ("tutorial", typeof(TextAsset)) as TextAsset;
+		TextAsset text = Resources.Load ("Objectives/tutorial", typeof(TextAsset)) as TextAsset;
 		string line = text.ToString ();		
 		string[] lines = line.Split ('\n');
 
@@ -25,6 +25,16 @@ public class TutorialQuest : Quest {
 	}
 
 	public override bool checkObjectiveCompletion(string playerAction) {
+		/*
+		 * TODO List of objectives for each quest stage
+		 * Switch depending on quest stage
+		 * Switch depending on objective within quest stage
+		 * 
+		 * */
+
+
+
+
 
 		//Debug.Log ("TutorialQuest: " + playerAction);
 
@@ -61,7 +71,8 @@ public class TutorialQuest : Quest {
 			break;
 		case "Press D to move right.":
 			if(playerAction == "d") {
-				Debug.Log ("Tutorial complete!");
+				//Debug.Log ("Tutorial complete!");
+				changeState (QuestState.Finished);
 			}
 			break;
 		}

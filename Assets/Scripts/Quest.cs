@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public abstract class Quest : MonoBehaviour {
 
-	public enum QuestState {NotEligible, Eligible, Active, Complete};
-	QuestState state = QuestState.Eligible;
+	public enum QuestState {Inactive, Prologue, Active, Finished};
+	QuestState state = QuestState.Prologue;
 
 	protected string questTitle;
 	protected string currentObjective;
