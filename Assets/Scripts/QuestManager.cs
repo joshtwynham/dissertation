@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -107,6 +107,10 @@ public class QuestManager : MonoBehaviour {
 	public void receiveDialogue(string dialogue) {
 		 
 		setDialogueText(dialogue);
+	}
+
+	public void dialogueComplete() {
+		currentQuest.dialogueComplete ();
 	}
 
 }
