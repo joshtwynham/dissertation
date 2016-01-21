@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class TutorialQuest : Quest {
 
-	void Awake() {
+	/*void Awake() {
 		this.questTitle = "Tutorial";
 
 		//Reads tutorial objectives from file and stores in an array
@@ -15,7 +15,7 @@ public class TutorialQuest : Quest {
 
 		this.objectives = new List<string> (lines);
 		this.currentObjective = objectives [0];
-	}
+	}*/
 
 	void Start() {
 
@@ -72,7 +72,7 @@ public class TutorialQuest : Quest {
 		case "Press D to move right.":
 			if(playerAction == "d") {
 				//Debug.Log ("Tutorial complete!");
-				changeState (QuestState.Finished);
+
 			}
 			break;
 		}

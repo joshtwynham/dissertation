@@ -38,15 +38,16 @@ public class NPCQuestUpdate : MonoBehaviour {
 
 	void OnMouseDown() {
 
-		//TODO move changing of state into QuestManager
+		
 
-		Debug.Log (questManager.getActiveQuest ().getQuestState ());
 		switch (questManager.getActiveQuest ().getQuestState ()) {
 		case Quest.QuestState.Inactive:
 			questManager.receiveDialogue(inactiveDialogue[currentInactiveLine]);
 			if(currentInactiveLine == inactiveDialogue.Count - 1) {
 				//If objectives are also complete, change state of quest
-				questManager.getActiveQuest().changeState(Quest.QuestState.Prologue);
+				//questManager.getActiveQuest().changeState(Quest.QuestState.Prologue);
+				questManager.dialogueComplete();
+
 			} else {
 				currentInactiveLine++;
 			}
@@ -55,7 +56,8 @@ public class NPCQuestUpdate : MonoBehaviour {
 			questManager.receiveDialogue(prologueDialogue[currentPrologueLine]);
 			if(currentPrologueLine == prologueDialogue.Count - 1) {
 				//If objectives are also complete, change state of quest 
-				questManager.getActiveQuest().changeState(Quest.QuestState.Active);
+				//questManager.getActiveQuest().changeState(Quest.QuestState.Active);
+				questManager.dialogueComplete();
 			} else {
 				currentPrologueLine++;
 			}
@@ -64,7 +66,8 @@ public class NPCQuestUpdate : MonoBehaviour {
 			questManager.receiveDialogue(activeDialogue[currentActiveLine]);
 			if(currentActiveLine == activeDialogue.Count - 1) {
 				//If objectives are also complete, change state of quest
-				questManager.getActiveQuest().changeState(Quest.QuestState.Finished);
+				//questManager.getActiveQuest().changeState(Quest.QuestState.Finished);
+				questManager.dialogueComplete();
 			} else {
 				currentActiveLine++;
 			}
@@ -73,6 +76,7 @@ public class NPCQuestUpdate : MonoBehaviour {
 			questManager.receiveDialogue(finishedDialogue[currentFinishedLine]);
 			if(currentFinishedLine == finishedDialogue.Count - 1) {
 				//If objectives are also complete, change state of quest
+				questManager.dialogueComplete();
 			} else {
 				currentFinishedLine++;
 			}
