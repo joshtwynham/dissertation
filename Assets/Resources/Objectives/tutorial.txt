@@ -7,4 +7,5 @@ Click on characters to interact with them.
 ~PROLOGUE
 Click on the character again to progress their dialogue.
 ~ACTIVE
+Walk into the box.
 ~FINISHED
