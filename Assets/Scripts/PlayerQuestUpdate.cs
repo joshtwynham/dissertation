@@ -16,17 +16,17 @@ public class PlayerQuestUpdate : MonoBehaviour {
 	void Update() {
 
 		if (Input.GetKey ("w"))
-			notifyQuestManager ("w");
+			notifyQuestManager ("w pressed");
 		if (Input.GetKey ("a"))
-			notifyQuestManager ("a");
+			notifyQuestManager ("a pressed");
 		if (Input.GetKey ("s"))
-			notifyQuestManager ("s");
+			notifyQuestManager ("s pressed");
 		if (Input.GetKey ("d"))
-			notifyQuestManager ("d");
+			notifyQuestManager ("d pressed");
 
 	}
 
 	private void notifyQuestManager(string playerAction) {
-		questManager.receivePlayerAction (playerAction);
+		questManager.checkObjectiveCompletion (playerAction);
 	}
 }

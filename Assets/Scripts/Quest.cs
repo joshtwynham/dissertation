@@ -1,32 +1,50 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 
 public abstract class Quest : MonoBehaviour {
 
 	public enum QuestState {Inactive, Prologue, Active, Finished};
-	QuestState state = QuestState.Prologue;
+	protected QuestState state = QuestState.Inactive;
 
 	protected string questTitle;
-	protected string currentObjective;
+	protected Objective currentObjective;
 
-	protected List<string> objectives = new List<string> ();
+	protected List<Objective> inactiveObjectives = new List<Objective> ();
+	protected List<Objective> prologueObjectives = new List<Objective> ();
+	protected List<Objective> activeObjectives = new List<Objective> ();
 
-	protected Dictionary<string, bool> inactiveObjectives = new Dictionary<string, bool>();
-	protected Dictionary<string, bool> prologueObjectives = new Dictionary<string, bool>();
-	protected Dictionary<string, bool> activeObjectives = new Dictionary<string, bool> ();
+	protected int currentInactiveObj = 0;
+	protected int currentPrologueObj = 0;
+	protected int currentActiveObj = 0;
 
-	protected bool stageDialogueComplete = false;
+	protected bool stageDialogueComplete;
 
 	public string objectivesFilename;
 
 	void Awake() {
 		parseObjectiveFile ();
-
+		currentObjective = inactiveObjectives [0];
+		stageDialogueComplete = false;
 	}
 
-	public void changeState(QuestState state) {
-		this.state = state;
+	public void progressState() {
+
+		switch (state) {
+		case(QuestState.Inactive):
+			state = QuestState.Prologue;
+			break;
+		case(QuestState.Prologue):
+			state = QuestState.Active;
+			break;
+		case(QuestState.Active):
+			state = QuestState.Finished;
+			break;
+		}
+
+		Debug.Log (state.ToString ());
+
 		stageDialogueComplete = false;
 	}
 
@@ -34,7 +52,7 @@ public abstract class Quest : MonoBehaviour {
 		return questTitle;
 	}
 
-	public string getObjective() {
+	public Objective getObjective() {
 		return currentObjective;
 	}
 
@@ -42,62 +60,103 @@ public abstract class Quest : MonoBehaviour {
 		return state;
 	}
 
-	public abstract bool checkObjectiveCompletion (string playerAction);
-
 	public void dialogueComplete() {
 		stageDialogueComplete = true;
-		Debug.Log ("Stage dialogue complete!");
 	}
 
-	public void checkStageCompletion() {
-
+	public bool isDialogueComplete () {
+		return stageDialogueComplete;
 	}
 
-	public void checkQuestCompletion() {
-		
-	}
+	/// <summary>
+	/// Parses the objectives file.
+	/// </summary>
+	private void parseObjectiveFile() {
 
-	private void extractObjectives() {
-
-	}
-
-	void parseObjectiveFile() {
+		//TODO convert lists of strings to lists of Objectives
 
 		//Reads tutorial objectives from file and stores in an array
 		TextAsset text = Resources.Load ("Objectives/" + objectivesFilename, typeof(TextAsset)) as TextAsset;
 		string fullText = text.ToString ();		
 		string[] questStages = fullText.Split ('~');
-		
-		/*inactiveDialogue = new List<string>(questStages [1].Split ('\n'));
-		prologueDialogue = new List<string>(questStages [2].Split ('\n'));
-		activeDialogue = new List<string>(questStages [3].Split ('\n'));
-		finishedDialogue = new List<string>(questStages[4].Split ('\n'));
 
-		extractDialogue (ref inactiveDialogue);
-		extractDialogue (ref prologueDialogue);
-		extractDialogue (ref activeDialogue);
-		extractDialogue (ref finishedDialogue);*/
 		List<string> inactiveList = new List<string>(questStages [1].Split ('\n'));
 		List<string> prologueList = new List<string>(questStages [2].Split ('\n'));
 		List<string> activeList = new List<string>(questStages [3].Split ('\n'));
 
-		convertListToDictionary(ref inactiveList, ref inactiveObjectives);
-		convertListToDictionary(ref prologueList, ref prologueObjectives);
-		convertListToDictionary(ref activeList, ref activeObjectives);
+		convertStringListToObjective (ref inactiveList, ref inactiveObjectives);
+		convertStringListToObjective (ref prologueList, ref prologueObjectives);
+		convertStringListToObjective (ref activeList, ref activeObjectives);
+	}
 
-		foreach (KeyValuePair<string, bool> kvp in inactiveObjectives) {
-			Debug.Log (kvp.Key + " : " + kvp.Value.ToString());
+	void convertStringListToObjective(ref List<string> stringList, ref List<Objective> objectiveList) {
+
+		stringList.RemoveAt (0);
+		stringList.RemoveAt (stringList.Count - 1);
+
+		foreach (string s in stringList) {
+			GameObject objective = Instantiate (Resources.Load ("Prefabs/Objective")) as GameObject;
+
+			objective.GetComponent <Objective>().setObjectiveText(s);
+
+			objectiveList.Add(objective.GetComponent <Objective>());
 		}
 	}
 
-	void convertListToDictionary(ref List<string> stageObjectives, ref Dictionary<string, bool> dictionary) {
-		//TODO ordered dictionary 
-
-		stageObjectives.RemoveAt (0);
-		stageObjectives.RemoveAt (stageObjectives.Count - 1);
-
-		foreach (string s in stageObjectives) {
-			dictionary.Add(s, false);
-		}
+	/// <summary>
+	/// Checks if the quest is completed or not.
+	/// </summary>
+	/// <returns><c>true</c>, if quest was completed, <c>false</c> otherwise.</returns>
+	bool checkQuestCompletion() {
+		if (state == QuestState.Finished && stageDialogueComplete) 
+			return true;
+		else 
+			return false;
 	}
+
+	/// <summary>
+	/// Checks if the current stage is completed.
+	/// </summary>
+	/// <returns><c>true</c>, if the current stage is completed, <c>false</c> otherwise.</returns>
+	public bool checkStageCompletion() {
+
+		bool completed = false;
+
+		switch (state) {
+		case(QuestState.Inactive):
+			if(checkListCompletion(ref inactiveObjectives) && stageDialogueComplete)
+				completed = true;
+
+				break;
+		case(QuestState.Prologue):
+			if(checkListCompletion(ref prologueObjectives) && stageDialogueComplete)
+				completed = true;
+
+				break;	
+		case(QuestState.Active):
+			if(checkListCompletion(ref activeObjectives) && stageDialogueComplete)
+				completed = true;
+
+				break;
+		}
+
+
+		return completed;
+	}
+
+	bool checkListCompletion(ref List<Objective> objectiveList) {
+		//Returns false if any of the Objectives are not completed, else otherwise
+		foreach (Objective obj in objectiveList) {
+			if(!obj.isCompleted()) {
+				return false;
+			} 
+		}
+				return true;
+	}
+
+	/// <summary>
+	/// Checks the if the current objective is complete.
+	/// </summary>
+	/// <returns><c>true</c>, if Objective is complete, <c>false</c> otherwise.</returns>
+	public abstract bool checkObjectiveCompletion (string playerAction);
 }

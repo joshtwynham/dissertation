@@ -4,8 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class QuestManager : MonoBehaviour {
-
-	string currentObjective = null;
+	
 	List<Quest> quests;
 
 	Quest currentQuest = null;
@@ -33,16 +32,15 @@ public class QuestManager : MonoBehaviour {
 		//If only one quest in scene, make it active	
 		if (quests.Count == 1) {
 			currentQuest = quests[0];
-			currentQuest.changeState(Quest.QuestState.Prologue);
-			currentObjective = currentQuest.getObjective ();
 		} 
 
 		//Set Objective on canvas to show current objective
 		objectiveGameObj = GameObject.FindWithTag ("Objective");
 		objectiveText = objectiveGameObj.GetComponent<Text> (); 
-		objectiveText.text = currentObjective;
+		objectiveText.text = currentQuest.getObjective().getObjectiveText();
 
 		//Find Dialogue on canvas
+
 		dialogueObj = GameObject.FindWithTag ("Dialogue");
 		dialogueText = dialogueObj.GetComponent<Text> (); 
 
@@ -53,19 +51,17 @@ public class QuestManager : MonoBehaviour {
 
 	}
 
-	/// <summary>
-	/// Starts the quest.
-	/// </summary>
-	/// <param name="quest">Quest to start.</param>
-	private void startQuest(Quest quest) {
-		quest.changeState(Quest.QuestState.Active);
+	void Update() {
+		if (currentQuest.checkStageCompletion () && currentQuest.isDialogueComplete()) {
+			progressQuest ();
+		}
 	}
 
 	/// <summary>
 	/// Finishes the quest.
 	/// </summary>
-	private void finishQuest() {
-		currentQuest.changeState(Quest.QuestState.Finished);
+	private void progressQuest() {
+		currentQuest.progressState();
 	}
 
 	/// <summary>
@@ -80,20 +76,19 @@ public class QuestManager : MonoBehaviour {
 	/// Receives the player action and queries the active Quest.
 	/// </summary>
 	/// <param name="playerAction">Player action.</param>
-	public void receivePlayerAction(string playerAction) {
-		if (currentQuest.checkObjectiveCompletion (playerAction)) {
-			currentObjective = currentQuest.getObjective();
-			setObjectiveText();
+	public void checkObjectiveCompletion(string eventName) {
 
+		if (currentQuest.checkObjectiveCompletion (eventName)) {
+			Debug.Log ("Objective complete!");
+			updateObjectiveText();
 		}
-		
 	}
 	
 	/// <summary>
 	/// Sets the objective text.
 	/// </summary>
-	private void setObjectiveText() {
-		objectiveText.text = currentObjective;
+	private void updateObjectiveText() {
+		objectiveText.text = currentQuest.getObjective().getObjectiveText();
 	}
 	
 	/// <summary>

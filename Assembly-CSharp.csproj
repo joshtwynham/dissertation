@@ -48,6 +48,7 @@
      <Compile Include="Assets\Scripts\ArchMage.cs" />
      <Compile Include="Assets\Scripts\CubeFloating.cs" />
      <Compile Include="Assets\Scripts\NPCQuestUpdate.cs" />
+     <Compile Include="Assets\Scripts\Objective.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\PlayerQuestUpdate.cs" />
      <Compile Include="Assets\Scripts\Quest.cs" />
