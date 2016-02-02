@@ -24,59 +24,64 @@ public class TutorialQuest : Quest {
 	
 	}
 
-	public override bool checkObjectiveCompletion(string playerAction) {
-		/*
-		 * TODO List of objectives for each quest stage
-		 * Switch depending on quest stage
-		 * Switch depending on objective within quest stage
-		 * 
-		 * */
+	void Update() {
 
+	}
 
-
-
-
-		//Debug.Log ("TutorialQuest: " + playerAction);
+	public override bool checkObjectiveCompletion(string eventName) {
 
 		bool objectiveChanged = false;
+		//TODO Switch on current state
+	    	//switch on current objective text
+			//if reqs are met (objects collected etc)
+				//remove objective from appropriate list
+				//change to next objective
+		 
+		//Player calls this through quest manager when certain events happen (collides with object etc)
 
-		//Check what current objective is
-		//If playerAction matches objective
-		//Objective moves to element line in objectives
-		//Return true
-		//Else
-		//Return false
+		switch (state) {
+		case QuestState.Inactive:
+			switch(currentObjective.getObjectiveText()) {
+			case "Press W to move forwards.":
+				if(eventName == "w pressed") {
+					inactiveObjectives[currentInactiveObj].completeObjective();
+					currentObjective = inactiveObjectives[++currentInactiveObj];
+					objectiveChanged = true;
+				}
+				break;
+			case "Press S to move backwards.":
+				if(eventName == "s pressed") {
+					inactiveObjectives[currentInactiveObj].completeObjective();
+					currentObjective = inactiveObjectives[++currentInactiveObj];
+					objectiveChanged = true;
+				}
+				break;
+			case "Press A to move left.":
+				if(eventName == "a pressed") {
+					inactiveObjectives[currentInactiveObj].completeObjective();
+					currentObjective = inactiveObjectives[++currentInactiveObj];
+					objectiveChanged = true;
+				}
+				break;
+			case "Press D to move right.":
+				if(eventName == "d pressed") {
+					inactiveObjectives[currentInactiveObj].completeObjective();
+					currentObjective = inactiveObjectives[++currentInactiveObj];
+					objectiveChanged = true;
+				}
+				break;
+			case "Click on characters to interact with them.":
+				if(eventName == "NPC clicked on") {
+					inactiveObjectives[currentInactiveObj].completeObjective();
+					currentObjective = prologueObjectives[currentPrologueObj];
+					objectiveChanged = true;
+				}
+				break;
+			}
+			break;
 
-		switch (currentObjective) {
-		case "Press W to move forwards.":
-			if(playerAction == "w") {
-				objectives.RemoveAt(0);
-				currentObjective = objectives[0];
-				objectiveChanged = true;
-			}
-			break;
-		case "Press S to move backwards.":
-			if(playerAction == "s") {
-				objectives.RemoveAt(0);
-				currentObjective = objectives[0];
-				objectiveChanged = true;
-			}
-			break;
-		case "Press A to move left.":
-			if(playerAction == "a") {
-				objectives.RemoveAt(0);
-				currentObjective = objectives[0];
-				objectiveChanged = true;
-			}
-			break;
-		case "Press D to move right.":
-			if(playerAction == "d") {
-				//Debug.Log ("Tutorial complete!");
 
-			}
-			break;
 		}
-		
 		return objectiveChanged;
 	}
 }
