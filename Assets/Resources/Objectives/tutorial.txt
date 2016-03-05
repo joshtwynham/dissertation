@@ -1,11 +1,12 @@
 ~INACTIVE
 Press W to move forwards.
 Press S to move backwards.
-Press A to move left.
-Press D to move right.
-Click on characters to interact with them.
+Press A to turn left.
+Press D to turn right.
 ~PROLOGUE
+Click on characters to interact with them.
 Click on the character again to progress their dialogue.
 ~ACTIVE
 Walk into the box.
+Do something.
 ~FINISHED

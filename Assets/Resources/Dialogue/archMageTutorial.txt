@@ -4,8 +4,10 @@ Welcome to Desborion.
 My name is Twynumbre, the Arch-Mage of Desborion's Mages guild.
 I have noticed your unique abilities in the field of Spellcasting,
 and have brought you here to ask for your assistance.
-Will you help me? 
+If you wish to help me, walk in to one of the boxes.
 ~ACTIVE
-Thank you, you will not regret this decision.
+Go on.
+It's easy.
+Do it.
 ~FINISHED
 Excellent.

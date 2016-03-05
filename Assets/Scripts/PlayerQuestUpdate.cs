@@ -24,9 +24,16 @@ public class PlayerQuestUpdate : MonoBehaviour {
 		if (Input.GetKey ("d"))
 			notifyQuestManager ("d pressed");
 
+
 	}
 
+	void OnCollisionEnter(Collision col) {
+		//TODO Check it's a box
+		notifyQuestManager ("boxHit");
+	}
+
+
 	private void notifyQuestManager(string playerAction) {
-		questManager.checkObjectiveCompletion (playerAction);
+		questManager.updateQuestData (playerAction);
 	}
 }

@@ -52,6 +52,13 @@ public class QuestManager : MonoBehaviour {
 	}
 
 	void Update() {
+		checkObjectiveCompletion ();
+	
+		if (currentQuest.isObjectiveComplete()) {
+			currentQuest.updateCurrentObjective();
+			updateObjectiveText();
+		}
+
 		if (currentQuest.checkStageCompletion () && currentQuest.isDialogueComplete()) {
 			progressQuest ();
 		}
@@ -76,12 +83,9 @@ public class QuestManager : MonoBehaviour {
 	/// Receives the player action and queries the active Quest.
 	/// </summary>
 	/// <param name="playerAction">Player action.</param>
-	public void checkObjectiveCompletion(string eventName) {
+	public void checkObjectiveCompletion() {
 
-		if (currentQuest.checkObjectiveCompletion (eventName)) {
-			Debug.Log ("Objective complete!");
-			updateObjectiveText();
-		}
+		currentQuest.checkObjectiveCompletion ();
 	}
 	
 	/// <summary>
@@ -108,4 +112,7 @@ public class QuestManager : MonoBehaviour {
 		currentQuest.dialogueComplete ();
 	}
 
+	public void updateQuestData(string eventName) {
+		currentQuest.updateQuestData (eventName);
+	}
 }

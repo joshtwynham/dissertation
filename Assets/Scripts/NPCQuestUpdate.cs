@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class NPCQuestUpdate : MonoBehaviour {
 
 	public QuestManager questManager;
-
 	public Quest questInvolved;
+	public Transform player;
 
 	public string dialogueFilename;
 
@@ -20,8 +20,6 @@ public class NPCQuestUpdate : MonoBehaviour {
 	int currentActiveLine = 0;
 	int currentFinishedLine = 0;
 
-	string currentDialogue;
-
 	void Awake() {
 		parseDialogueFile (dialogueFilename);
 	}
@@ -33,19 +31,36 @@ public class NPCQuestUpdate : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		transform.LookAt (player);
+
+		switch (questManager.getActiveQuest ().getQuestState ()) {
+		case Quest.QuestState.Inactive:
+			if(currentInactiveLine == inactiveDialogue.Count)
+				questManager.dialogueComplete();
+			break;
+		case Quest.QuestState.Prologue:
+			if(currentPrologueLine == prologueDialogue.Count)
+				questManager.dialogueComplete();
+			break;
+		case Quest.QuestState.Active:
+			if(currentActiveLine == activeDialogue.Count)
+				questManager.dialogueComplete();
+			break;
+		case Quest.QuestState.Finished:
+			if(currentFinishedLine == finishedDialogue.Count)
+				questManager.dialogueComplete();
+			break;
+		}
 
 	}
 
 	void OnMouseDown() {
-
-		questManager.checkObjectiveCompletion ("NPC clicked on");
-
+		questManager.updateQuestData ("NPC clicked on");
 		progressDialogue ();
 	}
 
 	void parseDialogueFile(string filename) {
-
-		//Reads tutorial objectives from file and stores in an array
+		//Reads dialogue from file and stores in an array
 		TextAsset text = Resources.Load ("Dialogue/" + dialogueFilename, typeof(TextAsset)) as TextAsset;
 		string fullText = text.ToString ();		
 		string[] questStages = fullText.Split ('~');
@@ -72,65 +87,35 @@ public class NPCQuestUpdate : MonoBehaviour {
 	}
 
 	void notifyQuestManager(string eventName) {
-
-		questManager.checkObjectiveCompletion (eventName);
-
+		questManager.updateQuestData(eventName);
 	}
 
 	void progressDialogue() {
-
 		switch (questManager.getActiveQuest ().getQuestState ()) {
 		case Quest.QuestState.Inactive:
-
-			if(currentInactiveLine == inactiveDialogue.Count) {
-				
-				questManager.dialogueComplete();
-				questManager.receiveDialogue(prologueDialogue[currentPrologueLine]);
-			} else {
+			if(currentInactiveLine != inactiveDialogue.Count) {
 				questManager.receiveDialogue(inactiveDialogue[currentInactiveLine]);
-				if(currentInactiveLine < inactiveDialogue.Count)
-					currentInactiveLine++;
-
+				currentInactiveLine++;
 			}
 			break;
 		case Quest.QuestState.Prologue:
-
-			if(currentPrologueLine == prologueDialogue.Count) {
-
-				questManager.dialogueComplete();
-				questManager.receiveDialogue(activeDialogue[currentActiveLine]);
-			} else {
+			if(currentPrologueLine != prologueDialogue.Count) {
 				questManager.receiveDialogue(prologueDialogue[currentPrologueLine]);
-				if(currentPrologueLine < prologueDialogue.Count)
 				currentPrologueLine++;
-
 			}
 			break;
 		case Quest.QuestState.Active:
-
-			if(currentActiveLine == activeDialogue.Count) {
-				
-				questManager.dialogueComplete();
-				questManager.receiveDialogue(finishedDialogue[currentFinishedLine]);
-			} else {
+			if(currentActiveLine != activeDialogue.Count) {
 				questManager.receiveDialogue(activeDialogue[currentActiveLine]);
-
-				if(currentActiveLine < activeDialogue.Count) 
 				currentActiveLine++;
-
 			}
 			break;
 		case Quest.QuestState.Finished:
-
-			if(currentFinishedLine == finishedDialogue.Count) {
-				
-				questManager.dialogueComplete();
-			} else {
+			if(currentFinishedLine != finishedDialogue.Count) {
 				questManager.receiveDialogue(finishedDialogue[currentFinishedLine]);
 				currentFinishedLine++;
 			}
 			break;
 		}
-
 	}
 }

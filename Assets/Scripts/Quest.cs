@@ -72,9 +72,6 @@ public abstract class Quest : MonoBehaviour {
 	/// Parses the objectives file.
 	/// </summary>
 	private void parseObjectiveFile() {
-
-		//TODO convert lists of strings to lists of Objectives
-
 		//Reads tutorial objectives from file and stores in an array
 		TextAsset text = Resources.Load ("Objectives/" + objectivesFilename, typeof(TextAsset)) as TextAsset;
 		string fullText = text.ToString ();		
@@ -158,5 +155,46 @@ public abstract class Quest : MonoBehaviour {
 	/// Checks the if the current objective is complete.
 	/// </summary>
 	/// <returns><c>true</c>, if Objective is complete, <c>false</c> otherwise.</returns>
-	public abstract bool checkObjectiveCompletion (string playerAction);
+	public abstract void checkObjectiveCompletion ();
+
+	public abstract void updateQuestData(string eventName);
+
+	public void completeObjective() {
+		currentObjective.completeObjective ();
+	}
+
+	public void updateCurrentObjective() {
+
+		switch (state) {
+		case QuestState.Inactive:
+			//Debug.Log ("current = " + currentInactiveObj + "\n total = " + inactiveObjectives.Count);
+			if(currentInactiveObj != inactiveObjectives.Count) {
+				currentObjective = inactiveObjectives[currentInactiveObj++];
+			}
+			//Debug.Log ("current = " + currentInactiveObj + "\n total = " + inactiveObjectives.Count);
+			break;
+		case QuestState.Prologue:
+			//Debug.Log ("current = " + currentPrologueObj + "\n total = " + prologueObjectives.Count);
+			if(currentPrologueObj != prologueObjectives.Count) {
+				currentObjective = prologueObjectives[currentPrologueObj++];
+			}
+			//Debug.Log ("current = " + currentPrologueObj + "\n total = " + prologueObjectives.Count);
+			break;
+		case QuestState.Active:
+			//Debug.Log ("current = " + currentActiveObj + "\n total = " + activeObjectives.Count);
+			if(currentActiveObj != activeObjectives.Count) {
+				currentObjective = activeObjectives[currentActiveObj++];
+				Debug.Log ("current obj = active");
+			}
+			//Debug.Log ("current = " + currentActiveObj + "\n total = " + activeObjectives.Count);
+			break;
+			
+			
+		}
+
+	}
+
+	public bool isObjectiveComplete() {
+		return currentObjective.isCompleted ();
+	}
 }
