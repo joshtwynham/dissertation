@@ -9,7 +9,7 @@ public class CubeFloating : MonoBehaviour {
 	 * 
 	 **/ 
 
-	public float floatAmount;
+	float floatAmount;
 
 	Vector3 originalPosition;
 	Vector3 currentPosition;
@@ -23,13 +23,14 @@ public class CubeFloating : MonoBehaviour {
 	void Start () {
 		cubeRigidbody = GetComponent<Rigidbody> ();
 		originalPosition = transform.position;
+		floatAmount = Random.value * 50;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		currentPosition = transform.position;
 
-		if (currentPosition.y < originalPosition.y - 0.3f) {
+		if (currentPosition.y < originalPosition.y - 0.8f) {
 			floatForce.Set (0f, 2 * floatAmount, 0);
 		} else {
 			floatForce.Set (0f, -floatAmount, 0);

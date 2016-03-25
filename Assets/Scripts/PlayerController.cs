@@ -5,46 +5,57 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 	
 	public float speed = 6f;
-	public float gravity = 20.0f;
-	public float lookSpeed = 3.8f;
-	
-	Vector3 movement;
+
 	Vector3 moveDirection;
 	Animator anim;
 	CharacterController controller;
-	Rigidbody playerRigidbody;
 
-	float turnSpeed = 250.0f;
-	float camRayLength = 100f;
+	bool playing = true;
+	bool canJump = false;
 
-	void Awake()
-	{
+	bool onGround = true;
 
+	float YVelocity = 0.0f;
+	float gravity = -0.2f;
+
+	void Awake() {
 		anim = GetComponent<Animator> ();
 		controller = GetComponent<CharacterController> ();
-		playerRigidbody = GetComponent<Rigidbody> ();
 	}
 
-	void FixedUpdate()
-	{
-		float h = Input.GetAxisRaw ("Horizontal");
-		float v = Input.GetAxisRaw ("Vertical");
+	void FixedUpdate() {
+		if (playing) {
 
-		Move (h, v);
-		Turning ();
-		Animating (h, v);
+			controller.Move(new Vector3(0, YVelocity));
+			YVelocity += gravity;
+
+			if(transform.position.y < 1f) {
+				onGround = true;
+			}
+
+			float h = Input.GetAxisRaw ("Horizontal");
+			float v = Input.GetAxisRaw ("Vertical");
+
+			if(canJump) {
+				Jump ();
+			}
+
+			Move (h, v);
+			Turning ();
+			Animating (h, v);
+		}
+
+
 	}
 	
-	void Move (float h, float v)
-	{
+	void Move (float h, float v) {
 		moveDirection = new Vector3 (0, 0, Input.GetAxis ("Vertical"));
 		moveDirection = transform.TransformDirection (moveDirection);
 		moveDirection *= speed;
 		controller.Move (moveDirection * Time.deltaTime);
 	}
 	
-	void Turning()
-	{
+	void Turning() {
 		if (Input.GetAxis ("Horizontal") > 0) {
 			transform.Rotate (new Vector3(0, 6 * Input.GetAxis ("Horizontal")));
 		}
@@ -54,11 +65,38 @@ public class PlayerController : MonoBehaviour {
 	
 	}
 
-	void Animating(float h, float v)
-	{
+	void Animating(float h, float v) {
 		bool walking = h != 0f || v != 0f;//If horizontal or vertical is pressed we are walking
 		anim.SetBool ("IsWalking", walking);
 	}
+		
+	void Jump() {
+		if (onGround) {
+			if(Input.GetButton("Jump")) {
+				onGround = false;
+				YVelocity = 3f;
+			}
+		}
+	}
+	
+	public void stopMovement() {
+		playing = false;
+		anim.SetBool ("IsWalking", false);
+	}
+
+	public void startMovement() {
+		playing = true;
+		anim.SetBool ("IsWalking", true);
+	}
+
+	public void receiveNotification(string notification) {
+
+		switch (notification) {
+		case "jumpAbilityGranted":
+			canJump = true;
+			break;
 
 
+		}
+	}
 }

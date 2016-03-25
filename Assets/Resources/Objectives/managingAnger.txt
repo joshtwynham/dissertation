@@ -1,0 +1,8 @@
+~INACTIVE
+Talk to the Arch Mage.
+~PROLOGUE
+Follow the Arch Mage.
+~ACTIVE
+Pay attention to what Reba and Meyers have to say.
+Try and advise Reba. Think about what will lead to the best outcome for everyone.
+~FINISHED

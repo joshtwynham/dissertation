@@ -11,6 +11,8 @@ public abstract class Quest : MonoBehaviour {
 	protected string questTitle;
 	protected Objective currentObjective;
 
+	public string dialogueFilename;
+
 	protected List<Objective> inactiveObjectives = new List<Objective> ();
 	protected List<Objective> prologueObjectives = new List<Objective> ();
 	protected List<Objective> activeObjectives = new List<Objective> ();
@@ -19,14 +21,54 @@ public abstract class Quest : MonoBehaviour {
 	protected int currentPrologueObj = 0;
 	protected int currentActiveObj = 0;
 
+	public int questNumber;
+
 	protected bool stageDialogueComplete;
 
 	public string objectivesFilename;
+
+	protected bool readyForCutscene = false;
+
+	protected List<string> inactiveDialogue;
+	protected List<string> prologueDialogue;
+	protected List<string> activeDialogue;
+	protected List<string> finishedDialogue;
+	
+	protected int currentInactiveLine = 0;
+	protected int currentPrologueLine = 0;
+	protected int currentActiveLine = 0;
+	protected int currentFinishedLine = 0;
+
+	public QuestManager questManager;
 
 	void Awake() {
 		parseObjectiveFile ();
 		currentObjective = inactiveObjectives [0];
 		stageDialogueComplete = false;
+		parseDialogueFile (dialogueFilename);
+	}
+
+	void Update() {
+		switch (state) {
+		case Quest.QuestState.Inactive:
+			if(currentInactiveLine == inactiveDialogue.Count)
+				questManager.dialogueComplete();
+			break;
+		case Quest.QuestState.Prologue:
+			if(currentPrologueLine == prologueDialogue.Count)
+				questManager.dialogueComplete();
+			break;
+		case Quest.QuestState.Active:
+			questManager.dialogueComplete();
+
+			break;
+		case Quest.QuestState.Finished:
+			if(currentFinishedLine == finishedDialogue.Count)
+				questManager.dialogueComplete();
+			break;
+		}
+
+
 	}
 
 	public void progressState() {
@@ -40,6 +82,7 @@ public abstract class Quest : MonoBehaviour {
 			break;
 		case(QuestState.Active):
 			state = QuestState.Finished;
+			questManager.receiveDialogue(progressDialogue());
 			break;
 		}
 
@@ -86,6 +129,7 @@ public abstract class Quest : MonoBehaviour {
 		convertStringListToObjective (ref activeList, ref activeObjectives);
 	}
 
+
 	void convertStringListToObjective(ref List<string> stringList, ref List<Objective> objectiveList) {
 
 		stringList.RemoveAt (0);
@@ -104,11 +148,13 @@ public abstract class Quest : MonoBehaviour {
 	/// Checks if the quest is completed or not.
 	/// </summary>
 	/// <returns><c>true</c>, if quest was completed, <c>false</c> otherwise.</returns>
-	bool checkQuestCompletion() {
-		if (state == QuestState.Finished && stageDialogueComplete) 
+	public bool checkQuestCompletion() {
+		if (state == QuestState.Finished && stageDialogueComplete) {
 			return true;
-		else 
+		} else {
 			return false;
+		}
+
 	}
 
 	/// <summary>
@@ -197,4 +243,76 @@ public abstract class Quest : MonoBehaviour {
 	public bool isObjectiveComplete() {
 		return currentObjective.isCompleted ();
 	}
+
+	void parseDialogueFile(string filename) {
+		//Reads dialogue from file and stores in an array
+		TextAsset text = Resources.Load ("Dialogue/" + dialogueFilename, typeof(TextAsset)) as TextAsset;
+		string fullText = text.ToString ();		
+		string[] questStages = fullText.Split ('~');
+		
+		inactiveDialogue = new List<string>(questStages [1].Split ('\n'));
+		prologueDialogue = new List<string>(questStages [2].Split ('\n'));
+		activeDialogue = new List<string>(questStages [3].Split ('\n'));
+		finishedDialogue = new List<string>(questStages[4].Split ('\n'));
+		
+		extractDialogue (ref inactiveDialogue);
+		extractDialogue (ref prologueDialogue);
+		extractDialogue (ref activeDialogue);
+		extractDialogue (ref finishedDialogue);
+	}
+
+	void extractDialogue(ref List<string> questStage) {
+
+		if (questStage.Count > 1) {
+			questStage.RemoveAt (questStage.Count - 1);
+		}
+
+		questStage.RemoveAt (0);
+
+		
+	}
+
+	public string progressDialogue() {
+		string returnString = null;
+
+		switch (state) {
+		case Quest.QuestState.Inactive:
+			if (currentInactiveLine != inactiveDialogue.Count) {
+				returnString = inactiveDialogue [currentInactiveLine];
+				currentInactiveLine++;
+			}
+			break;
+		case Quest.QuestState.Prologue:
+			if (currentPrologueLine != prologueDialogue.Count) {
+				returnString = prologueDialogue [currentPrologueLine];
+				currentPrologueLine++;
+			}
+			break;
+		case Quest.QuestState.Active:
+			if (currentActiveLine != activeDialogue.Count) {
+				returnString = activeDialogue [currentActiveLine];
+				currentActiveLine++;
+			}
+			break;
+		case Quest.QuestState.Finished:
+			if (currentFinishedLine != finishedDialogue.Count) {
+				returnString = finishedDialogue [currentFinishedLine];
+				currentFinishedLine++;
+			}
+			break;
+		}
+
+		return returnString;
+	}
+
+	public abstract void setupCharacterPositions ();
+
+	
+	public bool isReadyForCutscene() {
+		return readyForCutscene;
+	}
+
+	public abstract void playCutscene ();
+	
 }
+

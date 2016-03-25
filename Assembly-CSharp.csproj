@@ -47,26 +47,25 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\ArchMage.cs" />
      <Compile Include="Assets\Scripts\CubeFloating.cs" />
-     <Compile Include="Assets\Scripts\NPCQuestUpdate.cs" />
+     <Compile Include="Assets\Scripts\ManagingAngerQuest.cs" />
      <Compile Include="Assets\Scripts\Objective.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\PlayerQuestUpdate.cs" />
      <Compile Include="Assets\Scripts\Quest.cs" />
+     <Compile Include="Assets\Scripts\QuestGiverUpdate.cs" />
      <Compile Include="Assets\Scripts\QuestManager.cs" />
+     <Compile Include="Assets\Scripts\TextBox.cs" />
      <Compile Include="Assets\Scripts\TutorialQuest.cs" />
+     <Compile Include="Assets\Scripts\UIManager.cs" />
+     <None Include="Assets\Resources\Objectives\managingAnger.txt" />
      <None Include="Assets\Resources\Dialogue\archMageTutorial.txt" />
+     <None Include="Assets\Resources\Dialogue\archMageManagingAnger.txt" />
      <None Include="Assets\Resources\Objectives\tutorial.txt" />
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Analytics">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

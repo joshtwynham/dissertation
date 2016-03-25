@@ -1,0 +1,26 @@
+~INACTIVE
+Twynumbre: I want to tell you a story about when I was a young Mage like yourself.
+Twynumbre: Please follow me.
+~PROLOGUE
+Twynumbre: It begins during my first year at Mage school.
+Twynumbre: During Alchemy, where we mainly crafted potions
+Twynumbre: I found it particularly difficult to attain the same results as my peers.
+Twynumbre: This led to me getting extremely angry and smashing my half finished potions.
+Twynumbre: This happened far more often than I would like to admit…
+Twynumbre: But I started to notice a pattern.
+Twynumbre: Just before I would get this feeling of anger
+Twynumbre: the same thoughts popped into my head every time.
+Twynumbre: Thoughts like ‘I’ll never become a real Mage because I can never
+Twynumbre: improve my Alchemy skills.’
+Twynumbre: Now deep down I knew that thoughts like this were just not true.
+Twynumbre: However when I believed them, I could not stop myself from getting angry.
+Twynumbre: When I started to recognise these negative thoughts
+Twynumbre: I found that I could more easily see them for what they are…
+Twynumbre: Negative thoughts, not facts.
+Twynumbre: When I began to question my own thoughts, my temper drastically improved over
+Twynumbre: the course of a few weeks, and eventually I became top of my Alchemy class.
+~ACTIVE
+Twynumbre: Remember the story I told you earlier.
+Twynumbre: Does Reba seem to be saying anything that is clearly irrational and negative?
+Twynumbre: Try to think about the best outcome for everyone in this scenario.
+~FINISHED

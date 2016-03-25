@@ -21,7 +21,7 @@ public class TutorialQuest : Quest {
 	bool sPressed = false;
 	bool aPressed = false;
 	bool dPressed = false;
-	bool npcClicked = false;
+	bool archMageClicked = false;
 	bool boxHit = false;
 
 	void Start() {
@@ -62,22 +62,16 @@ public class TutorialQuest : Quest {
 			
 		case QuestState.Prologue:
 			switch(currentObjective.getObjectiveText()) {
-			case "Click on characters to interact with them.":
-				if(eventName == "NPC clicked on") {
-					Debug.Log ("NPC clicked = true");
-					npcClicked = true;
-				}
-				break;
-			case "Click on the character again to progress their dialogue.":
-				if(eventName == "NPC clicked on") {
-					npcClicked = true;
+			case "Click on characters to progress their dialogue.":
+				if(eventName == "ArchMage") {
+					archMageClicked = true;
 				}
 				break;
 			}
 			break;
 		case QuestState.Active:
 			switch(currentObjective.getObjectiveText()) {
-			case "Walk into the box.":
+			case "Walk into a box to finish the tutorial.":
 				if(eventName == "boxHit") {
 					boxHit = true;
 				}
@@ -119,21 +113,14 @@ public class TutorialQuest : Quest {
 				objectiveChanged = true;
 			}
 			break;
-		case "Click on characters to interact with them.":
-			if(npcClicked) {
-				npcClicked = false;
+		case "Click on characters to progress their dialogue.":
+			if(archMageClicked) {
+				archMageClicked = false;
 				completeObjective();
 				objectiveChanged = true;
 			}
 			break;
-		case "Click on the character again to progress their dialogue.":
-			if(npcClicked) {
-				npcClicked = false;
-				completeObjective();
-				objectiveChanged = true;
-			}
-			break;
-		case "Walk into the box.":
+		case "Walk into a box to finish the tutorial.":
 			if(boxHit) {
 				completeObjective ();
 				objectiveChanged = true;
@@ -142,4 +129,12 @@ public class TutorialQuest : Quest {
 		}
 
 	}	
+
+	public override void setupCharacterPositions() {
+
+	}
+
+	public override void playCutscene() {
+
+	}
 }

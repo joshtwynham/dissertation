@@ -5,20 +5,11 @@ using System.Collections.Generic;
 public class ArchMage : MonoBehaviour {
 
 	NavMeshAgent agent;
-	public Transform target;
 	Animator anim;
+	public QuestManager questManager;
 
 	// Use this for initialization
 	void Start () {
-
-		TextAsset text = Resources.Load ("archMage", typeof(TextAsset)) as TextAsset;
-
-		string line = text.ToString ();
-
-		string[] lines = line.Split ('\n');
-
-		Debug.Log (lines [1]);
-
 		agent = GetComponent<NavMeshAgent> ();
 		anim = GetComponent<Animator> ();
 	}
@@ -26,13 +17,9 @@ public class ArchMage : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Animate ();
-		if (agent.remainingDistance < 20f) {
-			agent.ResetPath();
+		if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag ("ManagingAngerEnd").transform.position) < 40) {
+			questManager.updateQuestData("destinationReached");
 		}
-	}
-
-	void OnMouseDown() {
-		agent.SetDestination (target.position);
 	}
 
 	void Animate() {

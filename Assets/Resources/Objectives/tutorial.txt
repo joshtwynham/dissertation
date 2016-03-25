@@ -4,9 +4,7 @@ Press S to move backwards.
 Press A to turn left.
 Press D to turn right.
 ~PROLOGUE
-Click on characters to interact with them.
-Click on the character again to progress their dialogue.
+Click on characters to progress their dialogue.
 ~ACTIVE
-Walk into the box.
-Do something.
+Walk into a box to finish the tutorial.
 ~FINISHED

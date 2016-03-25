@@ -24,7 +24,9 @@ public class PlayerQuestUpdate : MonoBehaviour {
 		if (Input.GetKey ("d"))
 			notifyQuestManager ("d pressed");
 
-
+		if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag ("ManagingAngerEnd").transform.position) < 20) {
+			questManager.updateQuestData("archMageFollowed");
+		}
 	}
 
 	void OnCollisionEnter(Collision col) {

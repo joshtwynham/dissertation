@@ -1,13 +1,13 @@
 ~INACTIVE
 ~PROLOGUE
-Welcome to Desborion.
-My name is Twynumbre, the Arch-Mage of Desborion's Mages guild.
-I have noticed your unique abilities in the field of Spellcasting,
-and have brought you here to ask for your assistance.
-If you wish to help me, walk in to one of the boxes.
+Twynumbre: Welcome to Desborion.
+Twynumbre: My name is Twynumbre, the Arch-Mage of Desborion's Mages guild.
+Twynumbre: I have noticed your unique abilities in the field of Spellcasting,
+Twynumbre: and have brought you here to ask for your assistance.
+Twynumbre: If you wish to help me, walk in to one of the boxes.
 ~ACTIVE
-Go on.
-It's easy.
-Do it.
+Twynumbre: Any one you want.
+Twynumbre: There's no rush.
+Twynumbre: How about that nice one over there?
 ~FINISHED
-Excellent.
+Twynumbre: Excellent.
