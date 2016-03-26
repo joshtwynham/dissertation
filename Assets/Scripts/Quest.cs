@@ -313,6 +313,9 @@ public abstract class Quest : MonoBehaviour {
 	}
 
 	public abstract void playCutscene ();
-	
+
+	public void resetQuest() {
+
+	}
 }
 

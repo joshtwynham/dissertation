@@ -27,9 +27,9 @@ public class QuestManager : MonoBehaviour {
 	public UIManager UIManager;
 
 	bool cutscenePlayed = false;
-
-
-
+	
+	public Transform cube;
+	
 	void Awake() {
 
 		//Stores Quests so they can be accessed via Quest title
