@@ -29,6 +29,8 @@ public class QuestManager : MonoBehaviour {
 	bool cutscenePlayed = false;
 	
 	public Transform cube;
+
+	bool questReset = false;
 	
 	void Awake() {
 
@@ -76,11 +78,19 @@ public class QuestManager : MonoBehaviour {
 	}
 
 	void Update() {
+		//TODO where to reset quest
+
+		if (questReset) {
+			questReset = false;
+			cutscenePlayed = false;
+			currentQuest.updateCurrentObjective();
+			updateObjectiveText();
+		}
 
 		if (playing) {
 			timeBetweenSpeech += Time.deltaTime;
-			
-			if (timeBetweenSpeech > 3) {
+			if (timeBetweenSpeech > 2.6) {
+
 				setDialogueText (currentQuest.progressDialogue ());
 				timeBetweenSpeech = 0.0f;
 			}
@@ -119,7 +129,6 @@ public class QuestManager : MonoBehaviour {
 				}
 			}
 		}
-
 
 	}
 
@@ -207,5 +216,11 @@ public class QuestManager : MonoBehaviour {
 
 	public void notifyPlayer(string notification) {
 		playerController.receiveNotification (notification);
+	}
+
+	public void replayQuest() {
+		currentQuest.resetQuest ();
+		currentQuest.setupCharacterPositions ();
+		questReset = true;
 	}
 }

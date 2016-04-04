@@ -31,4 +31,8 @@ public class Objective : MonoBehaviour {
 	public bool isCompleted() {
 		return completed;
 	}
+
+	public void resetObjective() {
+		completed = false;
+	}
 }

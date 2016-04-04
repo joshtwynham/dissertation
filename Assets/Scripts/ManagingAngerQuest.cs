@@ -7,24 +7,26 @@ public class ManagingAngerQuest : Quest {
 	bool archMageDestinationReached = false;
 	bool archMageFollowed = false;
 	bool scenarioWatched = false;
-
-	public Transform player;
-	public Transform archMage;
-
-	public Transform reba;
-	public Transform meyers;
-
-	Animator rebaAnim;
-	Animator meyersAnim;
-
-	Vector3 startPosition;
-
-	NavMeshAgent agent;
-
 	bool decisionMade = false;
 
 	int optionChosen = 0;
 
+	public Transform player;
+	public Transform archMage;
+	public Transform reba;
+	public Transform meyers;
+	public Transform mop;
+
+	Animator rebaAnim;
+	Animator meyersAnim;
+
+	Rigidbody mopRigidbody;
+	CapsuleCollider mopCollider;
+
+	Vector3 startPosition;
+
+	NavMeshAgent agent;
+	
 	string optionOne = "\"Meyers may or may not have meant to have done it…either way, all you can do now is focus on making the best of the situation. If you apologise for getting angry he may even help you clear up the mess.\"";
 	string optionTwo = "\"You’re right, in order to become a full Mage, everyone must respect you and never do anything that prevents you from reaching your goal. Throw your mop at him to teach her a lesson.\"";
 	string optionThree = "\"This must be really annoying, if I were you I’d just ignore him from now on, that’s the best way to show your anger for what he’s done.\"";
@@ -36,6 +38,11 @@ public class ManagingAngerQuest : Quest {
 
 		rebaAnim = reba.GetComponent<Animator> ();
 		meyersAnim = meyers.GetComponent<Animator> ();
+
+		mopRigidbody = mop.GetComponent<Rigidbody> ();
+		mopCollider = mop.GetComponent<CapsuleCollider> ();
+
+
 	}
 
 	void Update() {
@@ -138,25 +145,62 @@ public class ManagingAngerQuest : Quest {
 	IEnumerator cutscene() {
 		float timeBetweenSpeech = 0.2f;
 
+		reba.LookAt (meyers.position);
+		meyers.LookAt (reba.position);
+
 		questManager.pause ();
+		//Meyers spills a drink 
+		//Reba talking animation
+
+		rebaAnim.SetBool ("isTalking", true);
 		questManager.receiveDialogue ("Reba: Meyers!");
 		yield return new WaitForSeconds(timeBetweenSpeech);
+		rebaAnim.SetBool ("isTalking", false);
+		//Meyers talking animation
+
+
+		meyersAnim.SetBool ("isTalking", true);
 		questManager.receiveDialogue ("Meyers: Oh dear…I do apologise Reba.");
 		yield return new WaitForSeconds(timeBetweenSpeech);
+		meyersAnim.SetBool ("isTalking", false);
+
+		rebaAnim.SetBool ("isTalking", true);
+		//Reba talking animation
 		questManager.receiveDialogue ("Reba: Why would you do this to me?");
 		yield return new WaitForSeconds(timeBetweenSpeech);
 		questManager.receiveDialogue ("Reba: It’s like you’re trying to make me angry,");
 		yield return new WaitForSeconds(timeBetweenSpeech);
+		rebaAnim.SetBool ("isTalking", false);
+
+		//Reba threatens with mop
+		rebaAnim.SetBool ("isShakingMop", true);
 		questManager.receiveDialogue ("Reba: do you want me to hit you with this?!");
 		yield return new WaitForSeconds(timeBetweenSpeech);
+		rebaAnim.SetBool ("isShakingMop", false);
+
+		//Meyers talking animation
+		meyersAnim.SetBool ("isTalking", true);
 		questManager.receiveDialogue ("Meyers: That’s not going to help anything Reba,");
 		yield return new WaitForSeconds(timeBetweenSpeech);
 		questManager.receiveDialogue ("Meyers: of course I didn’t do this to you on purpose!");
 		yield return new WaitForSeconds(timeBetweenSpeech);
+		meyersAnim.SetBool ("isTalking", false);
+
+		//Reba talking animation
+		rebaAnim.SetBool ("isTalking", true);
 		questManager.receiveDialogue ("Reba: Don’t lie to me Meyers, you’re just making me angrier!");
 		yield return new WaitForSeconds(timeBetweenSpeech);
+		rebaAnim.SetBool ("isTalking", false);
+		//Meyers turns to ArchMage and talking animation
+
+		meyers.LookAt (archMage.position);
+		meyersAnim.SetBool ("isTalking", true);
 		questManager.receiveDialogue ("Meyers: Oh, Arch Mage…did you see the whole thing?");
 		yield return new WaitForSeconds(timeBetweenSpeech);
+		meyersAnim.SetBool ("isTalking", false);
+
+		//Reba talking animation
+		rebaAnim.SetBool ("isTalking", true);
 		questManager.receiveDialogue ("Reba: Listen to this Arch Mage,");
 		yield return new WaitForSeconds(timeBetweenSpeech);
 		questManager.receiveDialogue ("Reba: Meyers doesn’t want me to become a full Mage,");
@@ -165,6 +209,10 @@ public class ManagingAngerQuest : Quest {
 		yield return new WaitForSeconds(timeBetweenSpeech);
 		questManager.receiveDialogue ("Reba: Everyone is trying to prevent me from reaching my goal!");
 		yield return new WaitForSeconds(timeBetweenSpeech);
+		rebaAnim.SetBool ("isTalking", false);
+		//Meyers talking animation
+
+		meyersAnim.SetBool ("isTalking", true);
 		questManager.receiveDialogue ("Meyers: I assure you this is not true…");
 		yield return new WaitForSeconds(timeBetweenSpeech);
 		questManager.receiveDialogue ("Meyers: I have no desire to stop Reba from becoming a full Mage,");
@@ -174,6 +222,7 @@ public class ManagingAngerQuest : Quest {
 		questManager.receiveDialogue ("Meyers: and before I knew it I had dropped my drink all over the floor.");
 		yield return new WaitForSeconds(timeBetweenSpeech);
 		questManager.receiveDialogue ("Meyers: I have apologised but Reba only got angry at me.");
+		meyersAnim.SetBool ("isTalking", false);
 
 		updateQuestData ("scenarioWatched");
 
@@ -205,25 +254,46 @@ public class ManagingAngerQuest : Quest {
 			finishedDialogue.Insert(3, "Twynumbre: Try pressing the space bar.");
 
 			questManager.notifyPlayer("jumpAbilityGranted");
+
 			break;
 		case 2:
 			questManager.receiveDialogue ("Reba: Exactly! I'm going to teach you a lesson Meyers.");
 			yield return new WaitForSeconds(timeBetweenSpeech);
-			questManager.receiveDialogue ("Reba: I hope you like 'mop' flavour!");
+			rebaAnim.SetTrigger("throwMop");
+
+			questManager.receiveDialogue ("Reba: I hope you like mop juice!");
+
+
+			yield return new WaitForSeconds(0.5f);
+
+			mop.parent = null;
+			
+			mopCollider.enabled = true;
+			
+			mopRigidbody.AddForce ((meyers.position - reba.position) * 100);
+			
+			mopRigidbody.useGravity = true;
 			yield return new WaitForSeconds(timeBetweenSpeech);
-			//Anim: reba throws mop at meyers
+
+
 			questManager.receiveDialogue ("Meyers: Ahh Reba, in what way did that help?");
 			yield return new WaitForSeconds(timeBetweenSpeech);
 			questManager.receiveDialogue ("Meyers: Have fun cleaning that up by yourself, because I give up trying to be your friend.");
 			yield return new WaitForSeconds(timeBetweenSpeech);
 
+
+			Debug.Log (finishedDialogue.Count.ToString());
+
+			questManager.play ();
+
 			finishedDialogue.Insert(0, "Twynumbre: Oh dear.");
 			finishedDialogue.Insert(1, "Twynumbre: Now, I think that could have been handled a lot better.");
 			finishedDialogue.Insert(2, "Twynumbre: Let's try this one again.");
 
+			yield return new WaitForSeconds(9f);
 
+			questManager.replayQuest();
 
-			//Reset quest
 			break;
 		case 3:
 			questManager.receiveDialogue ("Reba: Yeah I guess you're right...");
@@ -238,9 +308,9 @@ public class ManagingAngerQuest : Quest {
 			finishedDialogue.Insert(0, "Twynumbre: I think we narrowly avoided a potentially explosive situation here.");
 			finishedDialogue.Insert(1, "Twynumbre: However that could have turned out better than it did.");
 			finishedDialogue.Insert(2, "Twynumbre: Ideally we want to show Reba that it is better");
-			finishedDialogue.Insert(2, "Twynumbre: not to make decisions when you are angry.");
+			finishedDialogue.Insert(3, "Twynumbre: not to make decisions when you are angry.");
 
-
+			yield return new WaitForSeconds(13f);
 
 			break;
 		}
@@ -265,5 +335,31 @@ public class ManagingAngerQuest : Quest {
 	public void onClickOptionThree() {
 		decisionMade = true;
 		optionChosen = 3;
+	}
+
+	public override void resetQuest ()
+	{
+		returnToDefault ();
+
+		//Remove the dialogue added after the scenario
+		switch (optionChosen) {
+		case 1:
+		case 3:
+			for(int i = finishedDialogue.Count - 1; i < finishedDialogue.Count - 4; i--)
+				finishedDialogue.RemoveAt(i);
+			break;
+		case 2:
+			for(int i = finishedDialogue.Count - 1; i < finishedDialogue.Count - 3; i--)
+				finishedDialogue.RemoveAt(i);
+			break;
+		}
+
+		optionChosen = 0;
+
+		archMageClicked = false;
+		archMageDestinationReached = false;
+		archMageFollowed = false;
+		scenarioWatched = false;
+		decisionMade = false;
 	}
 }

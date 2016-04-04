@@ -314,8 +314,33 @@ public abstract class Quest : MonoBehaviour {
 
 	public abstract void playCutscene ();
 
-	public void resetQuest() {
+	public abstract void resetQuest(); 
 
+	protected void returnToDefault() {
+
+		foreach (Objective o in inactiveObjectives) {
+			o.resetObjective();
+		}
+
+		foreach (Objective o in prologueObjectives) {
+			o.resetObjective();
+		}
+
+		foreach (Objective o in activeObjectives) {
+			o.resetObjective();
+		}
+
+		readyForCutscene = false;
+
+		currentInactiveObj = 0;
+		currentPrologueObj = 0;
+		currentActiveObj = 0;
+
+		currentInactiveLine = 0;
+		currentPrologueLine = 0;
+		currentActiveLine = 0;
+
+		state = QuestState.Inactive;
 	}
 }
 

@@ -131,10 +131,14 @@ public class TutorialQuest : Quest {
 	}	
 
 	public override void setupCharacterPositions() {
-
+		//TODO implement
 	}
 
 	public override void playCutscene() {
+		//TODO implement
+	}
 
+	public override void resetQuest() {
+		//TODO implement
 	}
 }
