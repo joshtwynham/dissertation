@@ -33,22 +33,21 @@ public class PlayerController : MonoBehaviour {
 				onGround = true;
 			}
 
-			float h = Input.GetAxisRaw ("Horizontal");
 			float v = Input.GetAxisRaw ("Vertical");
 
 			if(canJump) {
 				Jump ();
 			}
 
-			Move (h, v);
+			Move (v);
 			Turning ();
-			Animating (h, v);
+			Animating (v);
 		}
 
 
 	}
 	
-	void Move (float h, float v) {
+	void Move (float v) {
 		moveDirection = new Vector3 (0, 0, Input.GetAxis ("Vertical"));
 		moveDirection = transform.TransformDirection (moveDirection);
 		moveDirection *= speed;
@@ -65,8 +64,8 @@ public class PlayerController : MonoBehaviour {
 	
 	}
 
-	void Animating(float h, float v) {
-		bool walking = h != 0f || v != 0f;//If horizontal or vertical is pressed we are walking
+	void Animating(float v) {
+		bool walking = v != 0f;//If horizontal is pressed we are walking
 		anim.SetBool ("IsWalking", walking);
 	}
 		

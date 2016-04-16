@@ -1,13 +1,18 @@
 ~INACTIVE
 ~PROLOGUE
-Twynumbre: Welcome to Desborion.
-Twynumbre: My name is Twynumbre, the Arch-Mage of Desborion's Mages guild.
-Twynumbre: I have noticed your unique abilities in the field of Spellcasting,
-Twynumbre: and have brought you here to ask for your assistance.
-Twynumbre: If you wish to help me, walk in to one of the boxes.
+Arch-Mage: Welcome to Desborion.
+Arch-Mage: My name is Twynumbre, the Arch-Mage of Desborion's Mages guild.
+Arch-Mage: We Mages use our powers of spellcasting to bring greater
+Arch-Mage: good in the Land of Desborion.
+Arch-Mage: I have noticed your unique abilities as a Mage
+Arch-Mage: and have brought you here to ask for your assistance.
+Arch-Mage: I'm currently having trouble with a member of the our Guild.
+Arch-Mage: I could use someone like you to bring a fresh perspective
+Arch-Mage: to our long established Guild.
+Arch-Mage: If you wish to help me, walk in to one of the boxes.
 ~ACTIVE
-Twynumbre: Any one you want.
-Twynumbre: There's no rush.
-Twynumbre: How about that nice one over there?
+Arch-Mage: Any one you want.
+Arch-Mage: There's no rush.
+Arch-Mage: How about that nice one over there?
 ~FINISHED
-Twynumbre: Excellent.
+Arch-Mage: Excellent.

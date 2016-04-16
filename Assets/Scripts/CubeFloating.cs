@@ -17,7 +17,7 @@ public class CubeFloating : MonoBehaviour {
 	Vector3 clickForce;
 	Rigidbody cubeRigidbody;
 	
-
+	float fallDistance = 0.8f;
 
 	// Use this for initialization
 	void Start () {
@@ -30,7 +30,7 @@ public class CubeFloating : MonoBehaviour {
 	void Update () {
 		currentPosition = transform.position;
 
-		if (currentPosition.y < originalPosition.y - 0.8f) {
+		if (currentPosition.y < originalPosition.y - fallDistance) {
 			floatForce.Set (0f, 2 * floatAmount, 0);
 		} else {
 			floatForce.Set (0f, -floatAmount, 0);
@@ -39,7 +39,6 @@ public class CubeFloating : MonoBehaviour {
 
 	void FixedUpdate() {
 		cubeRigidbody.AddForce (floatForce);
-
 	}
 
 	void OnMouseDown() {

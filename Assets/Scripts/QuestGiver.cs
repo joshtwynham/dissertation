@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class QuestGiverUpdate : MonoBehaviour {
+public class QuestGiver : MonoBehaviour {
 
 	public QuestManager questManager;
 	public Transform player;

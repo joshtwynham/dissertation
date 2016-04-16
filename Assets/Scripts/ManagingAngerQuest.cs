@@ -24,6 +24,11 @@ public class ManagingAngerQuest : Quest {
 	CapsuleCollider mopCollider;
 
 	Vector3 startPosition;
+	Vector3 mopStartPosition;
+	Transform mopParent;
+	Quaternion mopRotation;
+
+	Vector3 cutScenePlayerPosition;
 
 	NavMeshAgent agent;
 	
@@ -33,6 +38,10 @@ public class ManagingAngerQuest : Quest {
 
 	// Use this for initialization
 	void Start () {
+		mopParent = mop.parent;
+
+		cutScenePlayerPosition = GameObject.Find ("CutsceneStartPosition").transform.position;
+
 		startPosition = GameObject.FindGameObjectWithTag ("ManagingAngerStart").transform.position;
 		agent = archMage.GetComponent<NavMeshAgent> ();
 
@@ -53,9 +62,9 @@ public class ManagingAngerQuest : Quest {
 
 		switch (state) {
 		case QuestState.Inactive:
-			switch (currentObjective.getObjectiveText()) {
-			case "Talk to the Arch Mage." :
-				if(eventName == "ArchMage") {
+			switch (currentObjective.getObjectiveText ()) {
+			case "Talk to the Arch Mage.":
+				if (eventName == "ArchMage") {
 					Debug.Log ("Arch mage clicked");
 					archMageClicked = true;
 				}
@@ -64,11 +73,12 @@ public class ManagingAngerQuest : Quest {
 
 			break;
 		case QuestState.Prologue:
-			switch (currentObjective.getObjectiveText()) {
-			case "Follow the Arch Mage." :
-				if(eventName == "destinationReached") {
+			switch (currentObjective.getObjectiveText ()) {
+			case "Follow the Arch Mage.":
+				if (eventName == "destinationReached") {
 					archMageDestinationReached = true;
-				} else if(eventName == "archMageFollowed") {
+
+				} else if (eventName == "archMageFollowed") {
 					archMageFollowed = true;
 				}
 				break;
@@ -77,24 +87,16 @@ public class ManagingAngerQuest : Quest {
 
 			break;
 		case QuestState.Active:
-			switch (currentObjective.getObjectiveText()) {
-			case "Pay attention to what Reba and Meyers have to say." :
-				if(eventName == "scenarioWatched") {
+			switch (currentObjective.getObjectiveText ()) {
+			case "Pay attention to what Reba and Meyers have to say.":
+				if (eventName == "scenarioWatched") {
 					scenarioWatched = true;
 				}
 				break;
 			}
 
 			break;
-
-		case QuestState.Finished:
-			switch (currentObjective.getObjectiveText()) {
-				
-				
-			}
-			break;
 		}
-
 	}
 
 	public override void checkObjectiveCompletion () {
@@ -136,6 +138,7 @@ public class ManagingAngerQuest : Quest {
 
 		player.position = startPosition;
 
+
 		agent.enabled = false;
 		archMage.position = new Vector3 (startPosition.x, startPosition.y, startPosition.z - 20);
 		agent.enabled = true;
@@ -143,10 +146,17 @@ public class ManagingAngerQuest : Quest {
 	}
 
 	IEnumerator cutscene() {
-		float timeBetweenSpeech = 0.2f;
+		float timeBetweenSpeech = 3f;
+
+		player.position = cutScenePlayerPosition;
+		player.LookAt (reba.position);
+		player.Rotate (new Vector3 (0, -20, 0));
 
 		reba.LookAt (meyers.position);
 		meyers.LookAt (reba.position);
+
+		mopStartPosition = mop.transform.position;
+		mopRotation = mop.rotation;
 
 		questManager.pause ();
 		//Meyers spills a drink 
@@ -248,10 +258,10 @@ public class ManagingAngerQuest : Quest {
 			questManager.receiveDialogue ("Reba: Thanks for understanding Meyers, sometimes my temper gets the better of me.");
 			yield return new WaitForSeconds(timeBetweenSpeech);
 
-			finishedDialogue.Insert(0, "Twynumbre: You handled that situation very well.");
-			finishedDialogue.Insert(1, "Twynumbre: You're going to make a great addition to the guild.");
-			finishedDialogue.Insert(2, "Twynumbre: I'm going to grant you a new ability...the ability to jump.");
-			finishedDialogue.Insert(3, "Twynumbre: Try pressing the space bar.");
+			finishedDialogue.Add("Arch-Mage: You handled that situation very well.");
+			finishedDialogue.Add("Arch-Mage: You're going to make a great addition to the guild.");
+			finishedDialogue.Add("Arch-Mage: I'm going to grant you a new ability...the ability to jump.");
+			finishedDialogue.Add("Arch-Mage: Try pressing the space bar.");
 
 			questManager.notifyPlayer("jumpAbilityGranted");
 
@@ -267,7 +277,7 @@ public class ManagingAngerQuest : Quest {
 			yield return new WaitForSeconds(0.5f);
 
 			mop.parent = null;
-			
+			mopRigidbody.isKinematic = false;
 			mopCollider.enabled = true;
 			
 			mopRigidbody.AddForce ((meyers.position - reba.position) * 100);
@@ -286,9 +296,10 @@ public class ManagingAngerQuest : Quest {
 
 			questManager.play ();
 
-			finishedDialogue.Insert(0, "Twynumbre: Oh dear.");
-			finishedDialogue.Insert(1, "Twynumbre: Now, I think that could have been handled a lot better.");
-			finishedDialogue.Insert(2, "Twynumbre: Let's try this one again.");
+			finishedDialogue.Add("Arch-Mage: Oh dear.");
+			finishedDialogue.Add("Arch-Mage: Now, I think that could have been handled a lot better.");
+			finishedDialogue.Add("Arch-Mage: It seems that reacting with violence has damaged your friendship with Meyers.");
+			finishedDialogue.Add("Arch-Mage: Let's try this one again.");
 
 			yield return new WaitForSeconds(9f);
 
@@ -305,10 +316,10 @@ public class ManagingAngerQuest : Quest {
 			questManager.receiveDialogue ("Meyers: but it would seem not.");
 			yield return new WaitForSeconds(timeBetweenSpeech);
 
-			finishedDialogue.Insert(0, "Twynumbre: I think we narrowly avoided a potentially explosive situation here.");
-			finishedDialogue.Insert(1, "Twynumbre: However that could have turned out better than it did.");
-			finishedDialogue.Insert(2, "Twynumbre: Ideally we want to show Reba that it is better");
-			finishedDialogue.Insert(3, "Twynumbre: not to make decisions when you are angry.");
+			finishedDialogue.Add("Arch-Mage: I think we narrowly avoided a potentially explosive situation here.");
+			finishedDialogue.Add("Arch-Mage: However that could have turned out better than it did.");
+			finishedDialogue.Add("Arch-Mage: Ideally we want to show Reba that it is better");
+			finishedDialogue.Add("Arch-Mage: not to make decisions when you are angry.");
 
 			yield return new WaitForSeconds(13f);
 
@@ -341,20 +352,15 @@ public class ManagingAngerQuest : Quest {
 	{
 		returnToDefault ();
 
-		//Remove the dialogue added after the scenario
-		switch (optionChosen) {
-		case 1:
-		case 3:
-			for(int i = finishedDialogue.Count - 1; i < finishedDialogue.Count - 4; i--)
-				finishedDialogue.RemoveAt(i);
-			break;
-		case 2:
-			for(int i = finishedDialogue.Count - 1; i < finishedDialogue.Count - 3; i--)
-				finishedDialogue.RemoveAt(i);
-			break;
-		}
+		for(int i = finishedDialogue.Count - 1; i < finishedDialogue.Count - 4; i--)
+			finishedDialogue.RemoveAt(i);
 
 		optionChosen = 0;
+
+		mopRigidbody.isKinematic = true;
+		mop.position = mopStartPosition;
+		mop.rotation = mopRotation;
+		mop.parent = mopParent;
 
 		archMageClicked = false;
 		archMageDestinationReached = false;

@@ -12,12 +12,6 @@ public class QuestManager : MonoBehaviour {
 
 	Quest currentQuest = null;
 
-	GameObject objectiveGameObj;
-	Text objectiveText;
-	
-	GameObject dialogueObj;
-	TextBox dialogueText;
-
 	int currentQuestNumber = 0;
 
 	float timeBetweenSpeech = 0.0f;
@@ -27,8 +21,6 @@ public class QuestManager : MonoBehaviour {
 	public UIManager UIManager;
 
 	bool cutscenePlayed = false;
-	
-	public Transform cube;
 
 	bool questReset = false;
 	
@@ -58,15 +50,7 @@ public class QuestManager : MonoBehaviour {
 			}
 		}
 
-		//Set Objective on canvas to show current objective
-		objectiveGameObj = GameObject.FindWithTag ("Objective");
-		objectiveText = objectiveGameObj.GetComponent<Text> (); 
-		objectiveText.text = currentQuest.getObjective().getObjectiveText();
-
-		//Find Dialogue on canvas
-
-		dialogueObj = GameObject.FindWithTag ("Dialogue");
-		dialogueText = dialogueObj.GetComponent<TextBox> (); 
+		UIManager.setObjectiveText (currentQuest.getObjective ().getObjectiveText ());
 
 		playerController = player.GetComponent<PlayerController> ();
 
@@ -76,7 +60,7 @@ public class QuestManager : MonoBehaviour {
 	
 
 	}
-
+	
 	void Update() {
 		//TODO where to reset quest
 
@@ -89,14 +73,13 @@ public class QuestManager : MonoBehaviour {
 
 		if (playing) {
 			timeBetweenSpeech += Time.deltaTime;
-			if (timeBetweenSpeech > 2.6) {
+			if (timeBetweenSpeech > 3.7) {
 
 				setDialogueText (currentQuest.progressDialogue ());
 				timeBetweenSpeech = 0.0f;
 			}
 
 		}
-
 
 		checkObjectiveCompletion ();
 			
@@ -105,13 +88,10 @@ public class QuestManager : MonoBehaviour {
 			updateObjectiveText();
 		}
 
-
 		if (currentQuest.checkStageCompletion () && currentQuest.isDialogueComplete()) {
 			progressQuest ();
 				
 		}
-
-
 
 		if(currentQuest.isReadyForCutscene() && !cutscenePlayed) {
 			cutscenePlayed = true;
@@ -160,7 +140,7 @@ public class QuestManager : MonoBehaviour {
 	/// Sets the objective text.
 	/// </summary>
 	private void updateObjectiveText() {
-		objectiveText.text = currentQuest.getObjective().getObjectiveText();
+		UIManager.setObjectiveText (currentQuest.getObjective ().getObjectiveText ());
 	}
 	
 	/// <summary>
@@ -168,12 +148,10 @@ public class QuestManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="dialogue">Dialogue.</param>
 	private void setDialogueText(string dialogue) {
-
-		dialogueText.setDialogueText (dialogue);
+		UIManager.setDialogueText (dialogue);
 	}
 
 	public void receiveDialogue(string dialogue) {
-		 
 		setDialogueText(dialogue);
 	}
 

@@ -25,9 +25,6 @@ public class TutorialQuest : Quest {
 	bool boxHit = false;
 
 	void Start() {
-
-
-
 	
 	}
 	

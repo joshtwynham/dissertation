@@ -11,7 +11,7 @@ public class TextBox : MonoBehaviour {
 
 	int screenHeight, screenWidth;
 
-	int boxWidth, boxHeight;
+	public int boxWidth, boxHeight;
 
 	bool visible = true;
 
@@ -20,9 +20,6 @@ public class TextBox : MonoBehaviour {
 
 		screenWidth = Screen.width;
 		screenHeight = Screen.height;
-
-		boxWidth = 500;
-		boxHeight = 70;
 
 		Debug.Log (Screen.height.ToString ());
 		rect = new Rect ((Screen.width / 2) - (boxWidth / 2), Screen.height - boxHeight, boxWidth, boxHeight);

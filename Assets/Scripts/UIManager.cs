@@ -63,4 +63,11 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
+	public void setObjectiveText(string text) {
+		objective.GetComponentInChildren<Text> ().text = text;
+	}
+
+	public void setDialogueText(string text) {
+		dialogue.GetComponent<TextBox> ().setDialogueText (text);
+	}
 }
