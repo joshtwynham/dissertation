@@ -204,6 +204,7 @@ public class ManagingAngerQuest : Quest {
 		//Meyers turns to ArchMage and talking animation
 
 		meyers.LookAt (archMage.position);
+		reba.LookAt (archMage.position);
 		meyersAnim.SetBool ("isTalking", true);
 		questManager.receiveDialogue ("Meyers: Oh, Arch Mage…did you see the whole thing?");
 		yield return new WaitForSeconds(timeBetweenSpeech);
@@ -241,22 +242,32 @@ public class ManagingAngerQuest : Quest {
 		while (!decisionMade)
 			yield return null;
 
-
+		reba.LookAt(meyers.position);
+		meyers.LookAt(reba.position);
 
 		questManager.hideButtons ();
 
 		switch (optionChosen) {
 		case 1:
+
+			rebaAnim.SetBool("isTalking", true);
 			questManager.receiveDialogue ("Reba: Damn...maybe the new kid has got some sense in him.");
 			yield return new WaitForSeconds(timeBetweenSpeech);
 			questManager.receiveDialogue ("Reba: Perhaps I did overreact a little. I'm sorry Meyers.");
 			yield return new WaitForSeconds(timeBetweenSpeech);
+			rebaAnim.SetBool("isTalking", false);
+
+			meyersAnim.SetBool("isTalking", true);
 			questManager.receiveDialogue ("Meyers: No worries Reba, I was planning on giving you a hand");
 			yield return new WaitForSeconds(timeBetweenSpeech);
 			questManager.receiveDialogue ("Meyers: cleaning up when you calmed down, pass me that mop!");
 			yield return new WaitForSeconds(timeBetweenSpeech);
+			meyersAnim.SetBool("isTalking", false);
+
+			rebaAnim.SetBool("isTalking", true);
 			questManager.receiveDialogue ("Reba: Thanks for understanding Meyers, sometimes my temper gets the better of me.");
 			yield return new WaitForSeconds(timeBetweenSpeech);
+			rebaAnim.SetBool("isTalking", false);
 
 			finishedDialogue.Add("Arch-Mage: You handled that situation very well.");
 			finishedDialogue.Add("Arch-Mage: You're going to make a great addition to the guild.");
@@ -267,12 +278,16 @@ public class ManagingAngerQuest : Quest {
 
 			break;
 		case 2:
+
+			rebaAnim.SetBool("isTalking", true);
 			questManager.receiveDialogue ("Reba: Exactly! I'm going to teach you a lesson Meyers.");
 			yield return new WaitForSeconds(timeBetweenSpeech);
+			rebaAnim.SetBool("isTalking", false);
 			rebaAnim.SetTrigger("throwMop");
 
+			rebaAnim.SetBool("isTalking", true);
 			questManager.receiveDialogue ("Reba: I hope you like mop juice!");
-
+			rebaAnim.SetBool("isTalking", false);
 
 			yield return new WaitForSeconds(0.5f);
 
@@ -285,11 +300,12 @@ public class ManagingAngerQuest : Quest {
 			mopRigidbody.useGravity = true;
 			yield return new WaitForSeconds(timeBetweenSpeech);
 
-
+			meyersAnim.SetBool("isTalking", true);
 			questManager.receiveDialogue ("Meyers: Ahh Reba, in what way did that help?");
 			yield return new WaitForSeconds(timeBetweenSpeech);
 			questManager.receiveDialogue ("Meyers: Have fun cleaning that up by yourself, because I give up trying to be your friend.");
 			yield return new WaitForSeconds(timeBetweenSpeech);
+			meyersAnim.SetBool("isTalking", false);
 
 
 			Debug.Log (finishedDialogue.Count.ToString());
@@ -301,20 +317,25 @@ public class ManagingAngerQuest : Quest {
 			finishedDialogue.Add("Arch-Mage: It seems that reacting with violence has damaged your friendship with Meyers.");
 			finishedDialogue.Add("Arch-Mage: Let's try this one again.");
 
-			yield return new WaitForSeconds(9f);
+			yield return new WaitForSeconds(13f);
 
 			questManager.replayQuest();
 
 			break;
 		case 3:
+			rebaAnim.SetBool("isTalking", true);
 			questManager.receiveDialogue ("Reba: Yeah I guess you're right...");
 			yield return new WaitForSeconds(timeBetweenSpeech);
 			questManager.receiveDialogue ("Reba: Leave me alone Meyers, I don't need you around here making me angry.");
 			yield return new WaitForSeconds(timeBetweenSpeech);
+			rebaAnim.SetBool("isTalking", false);
+
+			meyersAnim.SetBool("isTalking", true);
 			questManager.receiveDialogue ("Meyers: Uhh, okay Reba. I was hoping we could be friends someday...but it would seem not.");
 			yield return new WaitForSeconds(timeBetweenSpeech);
 			questManager.receiveDialogue ("Meyers: but it would seem not.");
 			yield return new WaitForSeconds(timeBetweenSpeech);
+			meyersAnim.SetBool("isTalking", false);
 
 			finishedDialogue.Add("Arch-Mage: I think we narrowly avoided a potentially explosive situation here.");
 			finishedDialogue.Add("Arch-Mage: However that could have turned out better than it did.");
@@ -368,4 +389,5 @@ public class ManagingAngerQuest : Quest {
 		scenarioWatched = false;
 		decisionMade = false;
 	}
+	
 }

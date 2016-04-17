@@ -49,6 +49,11 @@ public abstract class Quest : MonoBehaviour {
 	}
 
 	void Update() {
+
+		if (!stageDialogueComplete) {
+
+		}
+
 		switch (state) {
 		case Quest.QuestState.Inactive:
 			if(currentInactiveLine == inactiveDialogue.Count)

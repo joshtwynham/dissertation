@@ -33,8 +33,10 @@ public class ArchMage : MonoBehaviour {
 
 	void Animate() {
 		if (agent.hasPath) {
+			anim.SetBool("isTalking", false);
 			anim.SetBool ("isWalking", true);
 		} else {
+			anim.SetBool("isTalking", true);
 			anim.SetBool ("isWalking", false);
 		}
 

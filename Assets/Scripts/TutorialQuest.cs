@@ -5,18 +5,6 @@ using System.Collections.Generic;
 
 public class TutorialQuest : Quest {
 
-	/*void Awake() {
-		this.questTitle = "Tutorial";
-
-		//Reads tutorial objectives from file and stores in an array
-		TextAsset text = Resources.Load ("Objectives/tutorial", typeof(TextAsset)) as TextAsset;
-		string line = text.ToString ();		
-		string[] lines = line.Split ('\n');
-
-		this.objectives = new List<string> (lines);
-		this.currentObjective = objectives [0];
-	}*/
-	
 	bool wPressed = false;
 	bool sPressed = false;
 	bool aPressed = false;
@@ -24,10 +12,6 @@ public class TutorialQuest : Quest {
 	bool archMageClicked = false;
 	bool boxHit = false;
 
-	void Start() {
-	
-	}
-	
 	public override void updateQuestData (string eventName)
 	{
 
@@ -128,14 +112,11 @@ public class TutorialQuest : Quest {
 	}	
 
 	public override void setupCharacterPositions() {
-		//TODO implement
 	}
 
 	public override void playCutscene() {
-		//TODO implement
 	}
 
 	public override void resetQuest() {
-		//TODO implement
 	}
 }
